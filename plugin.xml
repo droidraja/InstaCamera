@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<plugin xmlns="http://apache.org/cordova/ns/plugins/1.0" xmlns:android="http://schemas.android.com/apk/res/android" id="com.sphata.instacamera" version="0.0.1">
+   <name>InstaCamera</name>
+   <js-module name="InstaCamera" src="www/InstaCamera.js">
+      <clobbers target="cordova.plugins.InstaCamera" />
+   </js-module>
+   <platform name="android">
+      <config-file parent="/*" target="res/xml/config.xml">
+         <feature name="InstaCamera">
+            <param name="android-package" value="com.sphata.instacamera" />
+         </feature>
+      </config-file>
+      <config-file parent="/*" target="AndroidManifest.xml" />
+      <config-file target="AndroidManifest.xml" parent="/manifest/application">
+            <activity android:label="Capture Image" android:name="com.sphata.instacamera.CameraActivity"></activity>
+            <activity android:label="Test activity" android:name="com.sphata.instacamera.TestActivity"></activity>
+      </config-file>
+      <config-file>
+
+      </config-file>
+      <source-file src="src/android/InstaCamera.java" target-dir="src/com/sphata/instacamera/" />
+      <source-file src="src/android/CameraActivity.java" target-dir="src/com/sphata/instacamera/" />
+      <source-file src="src/android/TestActivity.java" target-dir="src/com/sphata/instacamera/" />
+      <source-file src="src/android/PermissionDelegate.java" target-dir="src/com/sphata/instacamera/" />
+      
+      <resource-file src="src/android/res/layout/activity_camera.xml" target="res/layout/activity_camera.xml" />
+      <resource-file src="src/android/res/layout/activity_test.xml" target="res/layout/activity_test.xml" />
+      <resource-file src="src/android/res/drawable/capture.xml" target="res/drawable/capture.xml" />
+      <resource-file src="src/android/res/drawable/capture_active.xml" target="res/drawable/capture_active.xml" />
+      <resource-file src="src/android/res/drawable/capture_inactive.xml" target="res/drawable/capture_inactive.xml" />
+      <resource-file src="src/android/res/drawable/ic_autorenew_white.xml" target="res/drawable/ic_autorenew_white.xml" />
+      
+      <framework src="com.android.support:appcompat-v7:26.1.0" />
+      <framework src="com.android.support.constraint:constraint-layout:1.0.2" />
+      <framework src="src/android/plugin.gradle" custom="true" type="gradleReference"/>
+   </platform>
+</plugin>
