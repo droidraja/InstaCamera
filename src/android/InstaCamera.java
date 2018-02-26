@@ -2,6 +2,8 @@ package com.sphata.instacamera;
 
 import android.content.Context;
 import android.content.Intent;
+import android.os.Bundle;
+import android.util.Log;
 
 import org.apache.cordova.CordovaPlugin;
 import org.apache.cordova.CallbackContext;
@@ -17,23 +19,7 @@ import org.json.JSONObject;
  */
 public class InstaCamera extends CordovaPlugin {
 
-    // @Override
-    // public boolean execute(String action, JSONArray args, CallbackContext callbackContext) throws JSONException {
-    //     if (action.equals("coolMethod")) {
-    //         String message = args.getString(0);
-    //         this.coolMethod(message, callbackContext);
-    //         return true;
-    //     }
-    //     return false;
-    // }
-
-    // private void coolMethod(String message, CallbackContext callbackContext) {
-    //     if (message != null && message.length() > 0) {
-    //         callbackContext.success(message);
-    //     } else {
-    //         callbackContext.error("Expected one non-empty string argument.");
-    //     }
-    // }
+    private CallbackContext callbackContext;
 
     public void initialize(CordovaInterface cordova, CordovaWebView webView) {
         super.initialize(cordova, webView);
@@ -41,16 +27,34 @@ public class InstaCamera extends CordovaPlugin {
 
     @Override
     public boolean execute(String action, JSONArray args, CallbackContext callbackContext) throws JSONException {
+        this.callbackContext = callbackContext;
         Context context = cordova.getActivity().getApplicationContext();
-        if(action.equals("start_camera")) {
-            this.openNewActivity(context);
+        Intent intent = new Intent(context, TestActivity.class);
+        intent.putExtra("maxVideoDuration",args.getInt(0));
+        if (action.equals("start_camera")) {
+            cordova.startActivityForResult(this, intent, 10);
             return true;
         }
         return false;
     }
 
-    private void openNewActivity(Context context) {
-        Intent intent = new Intent(context, TestActivity.class);
-        this.cordova.getActivity().startActivity(intent);
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent intent) {
+        super.onActivityResult(requestCode, resultCode, intent);
+        String[] files = intent.getStringArrayExtra("files");
+        try {
+            JSONArray jsonArray = new JSONArray(files);
+            this.callbackContext.success(jsonArray);
+        } catch (Exception e) {
+            Log.e("InstaCamera", "JsonArray transformation not possible");
+        }
+
+
+    }
+
+    @Override
+    public void onRestoreStateForActivityResult(Bundle state, CallbackContext callbackContext) {
+        super.onRestoreStateForActivityResult(state, callbackContext);
+        this.callbackContext = callbackContext;
     }
 }

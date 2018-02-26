@@ -7,17 +7,26 @@
    <platform name="android">
       <config-file parent="/*" target="res/xml/config.xml">
          <feature name="InstaCamera">
-            <param name="android-package" value="com.sphata.instacamera" />
+            <param name="android-package" value="com.sphata.instacamera.InstaCamera" />
          </feature>
       </config-file>
       <config-file parent="/*" target="AndroidManifest.xml" />
+      <config-file parent="/manifest" target="AndroidManifest.xml">
+         <uses-permission android:name="android.permission.RECORD_AUDIO" />
+         <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+      </config-file>
       <config-file target="AndroidManifest.xml" parent="/manifest/application">
-            <activity android:label="Capture Image" android:name="com.sphata.instacamera.CameraActivity"></activity>
-            <activity android:label="Test activity" android:name="com.sphata.instacamera.TestActivity"></activity>
+            <activity android:label="Capture Image" 
+                     android:name="com.sphata.instacamera.CameraActivity"/>
+            <activity 
+               android:label="Camera activity" 
+               android:hardwareAccelerated="true"
+               android:theme="@style/Theme.CameraActivity"
+               android:name="com.sphata.instacamera.TestActivity"/>
       </config-file>
-      <config-file>
-
-      </config-file>
+      <edit-config file="AndroidManifest.xml" target="/manifest/application" mode="merge">
+         <application android:theme="@style/AppTheme" />
+      </edit-config>
       <source-file src="src/android/InstaCamera.java" target-dir="src/com/sphata/instacamera/" />
       <source-file src="src/android/CameraActivity.java" target-dir="src/com/sphata/instacamera/" />
       <source-file src="src/android/TestActivity.java" target-dir="src/com/sphata/instacamera/" />
@@ -29,9 +38,22 @@
       <resource-file src="src/android/res/drawable/capture_active.xml" target="res/drawable/capture_active.xml" />
       <resource-file src="src/android/res/drawable/capture_inactive.xml" target="res/drawable/capture_inactive.xml" />
       <resource-file src="src/android/res/drawable/ic_autorenew_white.xml" target="res/drawable/ic_autorenew_white.xml" />
-      
+      <resource-file src="src/android/res/values/styles.xml" target="res/values/styles.xml" />
+      <resource-file src="src/android/res/values/colors.xml" target="res/values/colors.xml" />
+
+      <resource-file src="src/android/res/drawable/background.xml" target="res/drawable/background.xml" />
+      <resource-file src="src/android/res/drawable/ic_edit.xml" target="res/drawable/ic_edit.xml" />
+      <resource-file src="src/android/res/drawable/ic_photo.xml" target="res/drawable/ic_photo.xml" />
+      <resource-file src="src/android/res/drawable/ic_switch.xml" target="res/drawable/ic_switch.xml" />
+      <resource-file src="src/android/res/drawable/ic_video.xml" target="res/drawable/ic_video.xml" />
+      <resource-file src="src/android/res/drawable/ic_record.xml" target="res/drawable/ic_record.xml" />
+      <resource-file src="src/android/res/drawable/ic_flash_on.xml" target="res/drawable/ic_flash_on.xml" />
+      <resource-file src="src/android/res/drawable/ic_flash_off.xml" target="res/drawable/ic_flash_off.xml" />
+
       <framework src="com.android.support:appcompat-v7:26.1.0" />
+      <framework src="com.otaliastudios:cameraview:1.4.1" />
       <framework src="com.android.support.constraint:constraint-layout:1.0.2" />
+      <framework src="com.android.support:design:26.1.0" />
       <framework src="src/android/plugin.gradle" custom="true" type="gradleReference"/>
    </platform>
 </plugin>
