@@ -16,8 +16,6 @@
          <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
       </config-file>
       <config-file target="AndroidManifest.xml" parent="/manifest/application">
-            <activity android:label="Capture Image" 
-                     android:name="com.sphata.instacamera.CameraActivity"/>
             <activity 
                android:label="Camera activity" 
                android:hardwareAccelerated="true"
@@ -28,11 +26,8 @@
          <application android:theme="@style/AppTheme" />
       </edit-config>
       <source-file src="src/android/InstaCamera.java" target-dir="src/com/sphata/instacamera/" />
-      <source-file src="src/android/CameraActivity.java" target-dir="src/com/sphata/instacamera/" />
       <source-file src="src/android/TestActivity.java" target-dir="src/com/sphata/instacamera/" />
-      <source-file src="src/android/PermissionDelegate.java" target-dir="src/com/sphata/instacamera/" />
       
-      <resource-file src="src/android/res/layout/activity_camera.xml" target="res/layout/activity_camera.xml" />
       <resource-file src="src/android/res/layout/activity_test.xml" target="res/layout/activity_test.xml" />
       <resource-file src="src/android/res/drawable/capture.xml" target="res/drawable/capture.xml" />
       <resource-file src="src/android/res/drawable/capture_active.xml" target="res/drawable/capture_active.xml" />
@@ -42,7 +37,6 @@
       <resource-file src="src/android/res/values/colors.xml" target="res/values/colors.xml" />
 
       <resource-file src="src/android/res/drawable/background.xml" target="res/drawable/background.xml" />
-      <resource-file src="src/android/res/drawable/ic_edit.xml" target="res/drawable/ic_edit.xml" />
       <resource-file src="src/android/res/drawable/ic_photo.xml" target="res/drawable/ic_photo.xml" />
       <resource-file src="src/android/res/drawable/ic_switch.xml" target="res/drawable/ic_switch.xml" />
       <resource-file src="src/android/res/drawable/ic_video.xml" target="res/drawable/ic_video.xml" />
