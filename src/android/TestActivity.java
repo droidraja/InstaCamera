@@ -65,7 +65,6 @@ public class TestActivity extends AppCompatActivity implements View.OnClickListe
     private static final String TAG = "InstaCamera";
 
 
-
     private int maxVideoDuration;
 
     private SeekBar zoomSeekBar;
@@ -104,8 +103,8 @@ public class TestActivity extends AppCompatActivity implements View.OnClickListe
             @Override
             public void onZoomChanged(float newValue, float[] bounds, PointF[] fingers) {
                 super.onZoomChanged(newValue, bounds, fingers);
-                float percent = ((newValue-bounds[0])/(bounds[1]-bounds[0]))*100;
-                zoomSeekBar.setProgress((int)Math.floor((double)percent));
+                float percent = ((newValue - bounds[0]) / (bounds[1] - bounds[0])) * 100;
+                zoomSeekBar.setProgress((int) Math.floor((double) percent));
                 zoomSeekBar.setVisibility(View.VISIBLE);
                 hideZoomBar();
             }
@@ -193,7 +192,7 @@ public class TestActivity extends AppCompatActivity implements View.OnClickListe
         int id = view.getId();
 
         if (flash_id == id) {
-            toggleFlash();
+            handleFlashButton();
         }
 
         if (capturePhoto_id == id)
@@ -236,12 +235,15 @@ public class TestActivity extends AppCompatActivity implements View.OnClickListe
         switch (camera.toggleFacing()) {
             case BACK:
                 message("Switched to back camera!", false);
+                flashButton.setVisibility(View.VISIBLE);
                 break;
 
             case FRONT:
                 message("Switched to front camera!", false);
+                flashButton.setVisibility(View.GONE);
                 break;
         }
+        setFlashButton();
     }
 
     @Override
@@ -254,7 +256,7 @@ public class TestActivity extends AppCompatActivity implements View.OnClickListe
     protected void onPause() {
         super.onPause();
         camera.stop();
-        if(timer!=null )
+        if (timer != null)
             timer.cancel();
     }
 
@@ -278,21 +280,35 @@ public class TestActivity extends AppCompatActivity implements View.OnClickListe
     }
 
 
-    protected void toggleFlash() {
-        if (mCapturingPicture) return;
-        switch (camera.getFlash()) {
-            case ON:
-                camera.setFlash(Flash.OFF);
-                flashButton.setImageResource(getDrawableResource("ic_flash_off"));
-                message("Flash Off", false);
-                break;
-            case OFF:
-                camera.set(Flash.ON);
-                flashButton.setImageResource(getDrawableResource("ic_flash_on"));
-                message("Flash On", false);
-                break;
-            default:
-                camera.setFlash(Flash.ON);
+    protected void handleFlashButton() {
+        if (camera.getSessionType() == SessionType.PICTURE) {
+            switch (camera.getFlash()) {
+                case ON:
+                    camera.setFlash(Flash.OFF);
+                    flashButton.setImageResource(getDrawableResource("ic_flash_off"));
+                    message("Flash Off", false);
+                    break;
+                case OFF:
+                    camera.set(Flash.ON);
+                    flashButton.setImageResource(getDrawableResource("ic_flash_on"));
+                    message("Flash On", false);
+                    break;
+                default:
+                    camera.setFlash(Flash.ON);
+            }
+        } else {
+            switch (camera.getFlash()) {
+                case TORCH:
+                    camera.setFlash(Flash.OFF);
+                    flashButton.setImageResource(getDrawableResource("ic_flash_off"));
+                    message("Flash Off", false);
+                    break;
+                case OFF:
+                    camera.set(Flash.TORCH);
+                    flashButton.setImageResource(getDrawableResource("ic_flash_on"));
+                    message("Flash On", false);
+                    break;
+            }
         }
 
     }
@@ -385,6 +401,22 @@ public class TestActivity extends AppCompatActivity implements View.OnClickListe
         timerTextView.setVisibility(View.VISIBLE);
         camera.setSessionType(SessionType.VIDEO);
         videoControl.setVisibility(View.VISIBLE);
+        camera.setFlash(Flash.OFF);
+        setFlashButton();
+    }
+
+    private void setFlashButton() {
+        switch (camera.getFlash()) {
+            case ON:
+                flashButton.setImageResource(getDrawableResource("ic_flash_on"));
+                break;
+            case OFF:
+                flashButton.setImageResource(getDrawableResource("ic_flash_off"));
+                break;
+            case TORCH:
+                flashButton.setImageResource(getDrawableResource("ic_flash_on"));
+                break;
+        }
     }
 
     private void switchToPictureMode() {
@@ -393,6 +425,7 @@ public class TestActivity extends AppCompatActivity implements View.OnClickListe
         timerTextView.setVisibility(View.GONE);
         camera.setSessionType(SessionType.PICTURE);
         videoControl.setVisibility(View.GONE);
+        setFlashButton();
     }
 
 
@@ -411,11 +444,10 @@ public class TestActivity extends AppCompatActivity implements View.OnClickListe
     }
 
 
-    private void hideZoomBar()
-    {
-        if(zoomHideTimer!=null)
+    private void hideZoomBar() {
+        if (zoomHideTimer != null)
             zoomHideTimer.cancel();
-        zoomHideTimer = new CountDownTimer(3000,1000) {
+        zoomHideTimer = new CountDownTimer(3000, 1000) {
             @Override
             public void onTick(long millisUntilFinished) {
 
@@ -428,5 +460,5 @@ public class TestActivity extends AppCompatActivity implements View.OnClickListe
         };
         zoomHideTimer.start();
     }
-    
+
 }

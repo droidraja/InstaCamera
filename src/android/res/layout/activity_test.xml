@@ -2,6 +2,7 @@
 <RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/root"
     android:background="#FF444444"
     android:animateLayoutChanges="true"
@@ -34,16 +35,27 @@
 
     </com.otaliastudios.cameraview.CameraView>
 
-    <SeekBar
-        android:id="@+id/seekBar"
+    <com.h6ah4i.android.widget.verticalseekbar.VerticalSeekBarWrapper
         android:layout_width="wrap_content"
-        android:visibility="invisible"
-        android:layout_height="wrap_content"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentStart="true"
-        android:max="100"
-        android:progress="0" />
+        android:layout_height="150dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginBottom="120dp"
+        android:layout_marginLeft="10sp"
+        android:layout_marginTop="50dp"
+        >
 
+        <com.h6ah4i.android.widget.verticalseekbar.VerticalSeekBar
+            android:id="@+id/seekBar"
+            style="@style/AppTheme"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:splitTrack="false"
+            android:theme="@style/AppTheme"
+            android:visibility="invisible"
+            app:seekBarRotation="CW270"
+            tools:visibility="visible" /> <!-- Rotation: CW90 or CW270 -->
+    </com.h6ah4i.android.widget.verticalseekbar.VerticalSeekBarWrapper>
     <RelativeLayout
         android:id="@+id/pictureControl"
         android:layout_width="match_parent"
@@ -53,13 +65,6 @@
         android:layout_gravity="bottom"
         android:padding="16dp"
         android:weightSum="3">
-
-        <ImageButton
-            android:id="@+id/flash"
-            android:layout_width="56dp"
-            android:layout_height="56dp"
-            android:background="@drawable/background"
-            app:srcCompat="@drawable/ic_flash_off" />
 
         <ImageButton
             android:id="@+id/capturePhoto"
@@ -82,14 +87,6 @@
             android:background="@drawable/background"
             app:srcCompat="@drawable/ic_video" />
 
-        <ImageButton
-            android:id="@+id/toggleCamera"
-            android:layout_width="56dp"
-            android:layout_height="56dp"
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentTop="true"
-            android:background="@drawable/background"
-            app:srcCompat="@drawable/ic_switch" />
     </RelativeLayout>
 
     <!-- Controls -->
@@ -139,6 +136,27 @@
             app:layout_anchorGravity="left|center"
             app:srcCompat="@drawable/ic_photo" />
     </RelativeLayout>
+
+    <ImageButton
+        android:id="@+id/flash"
+        android:layout_width="56dp"
+        android:layout_height="56dp"
+        android:layout_alignParentBottom="true"
+
+        android:layout_margin="16dp"
+        android:background="@drawable/background"
+        app:srcCompat="@drawable/ic_flash_off" />
+
+    <ImageButton
+        android:id="@+id/toggleCamera"
+        android:layout_width="56dp"
+        android:layout_height="56dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentTop="false"
+        android:layout_margin="16dp"
+        android:background="@drawable/background"
+        app:srcCompat="@drawable/ic_switch" />
 
 </RelativeLayout>
 
