@@ -57,7 +57,7 @@ public class TestActivity extends AppCompatActivity implements View.OnClickListe
 
     private TextView timerTextView;
     private View pictureControl, videoControl;
-    private AppCompatImageButton recordButton, switchPictureButton, flashButton;
+    private AppCompatImageButton recordButton, switchPictureButton, flashButton, toggleCamera;
     CountDownTimer timer;
 
     private String sessionName;
@@ -97,6 +97,8 @@ public class TestActivity extends AppCompatActivity implements View.OnClickListe
             @Override
             public void onVideoTaken(File video) {
                 super.onVideoTaken(video);
+                if(mCapturingVideo)
+                    stopRecordingUI();
                 onVideo(video);
             }
 
@@ -115,9 +117,9 @@ public class TestActivity extends AppCompatActivity implements View.OnClickListe
         findViewById(getIDResource("flash")).setOnClickListener(this);
         findViewById(getIDResource("capturePhoto")).setOnClickListener(this);
         findViewById(getIDResource("captureVideo")).setOnClickListener(this);
-        findViewById(getIDResource("toggleCamera")).setOnClickListener(this);
+        
 
-
+        toggleCamera = findViewById(getIDResource("toggleCamera"));
         timerTextView = findViewById(getIDResource("video_timer"));
         pictureControl = findViewById(getIDResource("pictureControl"));
         videoControl = findViewById(getIDResource("videoControl"));
@@ -126,6 +128,7 @@ public class TestActivity extends AppCompatActivity implements View.OnClickListe
 
 
         recordButton.setOnClickListener(this);
+        toggleCamera.setOnClickListener(this);
         switchPictureButton = findViewById(getIDResource("switchPicture"));
         switchPictureButton.setOnClickListener(this);
 
@@ -223,7 +226,9 @@ public class TestActivity extends AppCompatActivity implements View.OnClickListe
         if (!isStorable()) return;
 
         mCapturingVideo = true;
-        message("Recording started...", true);
+        message("Recording started...", false);
+        toggleCamera.setVisibility(View.GONE);
+        switchPictureButton.setVisibility(View.GONE);
         recordButton.setImageResource(getDrawableResource("ic_record"));
         camera.startCapturingVideo(getFile("video"));
         startTimer(maxVideoDuration);
@@ -432,16 +437,23 @@ public class TestActivity extends AppCompatActivity implements View.OnClickListe
     private void handleRecordButton() {
 
         if (mCapturingVideo) {
+            stopRecordingUI();
             camera.stopCapturingVideo();
-            mCapturingVideo = false;
-            recordButton.setImageResource(getDrawableResource("capture"));
-            timerTextView.setText("00 : 00");
-            timer.cancel();
         } else {
             captureVideo();
         }
 
     }
+
+    private void stopRecordingUI(){
+        mCapturingVideo = false;
+        recordButton.setImageResource(getDrawableResource("capture"));
+        timerTextView.setText("00 : 00");
+        timer.cancel();
+        toggleCamera.setVisibility(View.VISIBLE);
+        switchPictureButton.setVisibility(View.VISIBLE);
+    }
+
 
 
     private void hideZoomBar() {
