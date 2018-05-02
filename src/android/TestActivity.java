@@ -57,7 +57,7 @@ public class TestActivity extends AppCompatActivity implements View.OnClickListe
 
     private TextView timerTextView;
     private View pictureControl, videoControl;
-    private AppCompatImageButton recordButton, switchPictureButton, flashButton, toggleCamera;
+    private AppCompatImageButton recordButton, switchPictureButton, flashButton, toggleCamera, closeButton;
     CountDownTimer timer;
 
     private String sessionName;
@@ -125,6 +125,13 @@ public class TestActivity extends AppCompatActivity implements View.OnClickListe
         videoControl = findViewById(getIDResource("videoControl"));
         recordButton = findViewById(getIDResource("record_button"));
         flashButton = findViewById(getIDResource("flash"));
+        closeButton = findViewById(getIDResource("close_app"));
+        closeButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                TestActivity.this.onBackPressed();
+            }
+        });
 
 
         recordButton.setOnClickListener(this);
